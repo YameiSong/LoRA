@@ -49,6 +49,7 @@ class Embedding(nn.Embedding, LoRALayer):
             self.lora_B = nn.Parameter(self.weight.new_zeros((embedding_dim, r)))
             self.scaling = self.lora_alpha / self.r
             # Freezing the pre-trained weight matrix
+            # === Pretrained weights are loaded in the weight attribute by calling `model.load_state_dict`
             self.weight.requires_grad = False
         self.reset_parameters()
 
@@ -60,11 +61,13 @@ class Embedding(nn.Embedding, LoRALayer):
             nn.init.normal_(self.lora_B)
 
     def train(self, mode: bool = True):
+        # === mode: if True, the model is set to training mode, otherwise to evaluation mode
         nn.Embedding.train(self, mode)
         if mode:
             if self.merge_weights and self.merged:
-                # Make sure that the weights are not merged
+                # Make sure that the weights are not merged, then unmerge the weights and mark it
                 if self.r > 0:
+                    # === weight is subtracted by the product of lora_B and lora_A (transposed and scaled)
                     self.weight.data -= (self.lora_B @ self.lora_A).transpose(0, 1) * self.scaling
                 self.merged = False
         else:
@@ -77,10 +80,12 @@ class Embedding(nn.Embedding, LoRALayer):
     def forward(self, x: torch.Tensor):
         if self.r > 0 and not self.merged:
             result = nn.Embedding.forward(self, x)
+            # === after_A: low-rank representation of the input tensor x?
             after_A = F.embedding(
                 x, self.lora_A.transpose(0, 1), self.padding_idx, self.max_norm,
                 self.norm_type, self.scale_grad_by_freq, self.sparse
             )
+            # === result: the sum of the original embedding and the low-rank representation?
             result += (after_A @ self.lora_B.transpose(0, 1)) * self.scaling
             return result
         else:
@@ -113,6 +118,7 @@ class Linear(nn.Linear, LoRALayer):
             # Freezing the pre-trained weight matrix
             self.weight.requires_grad = False
         self.reset_parameters()
+        # === what is the purpose of this?
         if fan_in_fan_out:
             self.weight.data = self.weight.data.transpose(0, 1)
 
