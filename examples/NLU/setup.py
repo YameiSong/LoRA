@@ -86,7 +86,7 @@ _deps = [
     "black>=20.8b1",
     "cookiecutter==1.7.2",
     "dataclasses",
-    "datasets",
+    "datasets<2.3.0",
     "faiss-cpu",
     "fastapi",
     "filelock",

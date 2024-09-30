@@ -5,7 +5,7 @@ deps = {
     "black": "black>=20.8b1",
     "cookiecutter": "cookiecutter==1.7.2",
     "dataclasses": "dataclasses",
-    "datasets": "datasets",
+    "datasets": "datasets<2.3.0",
     "faiss-cpu": "faiss-cpu",
     "fastapi": "fastapi",
     "filelock": "filelock",
