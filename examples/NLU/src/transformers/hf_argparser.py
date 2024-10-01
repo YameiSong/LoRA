@@ -184,6 +184,7 @@ class HfArgumentParser(ArgumentParser):
         # with `--local_rank` to make sure the argument is parsed correctly
         if args is not None:
             args = [re.sub(r"^--local-rank$", "--local_rank", arg) for arg in args]
+            print("args:", args)
 
         namespace, remaining_args = self.parse_known_args(args=args)
         outputs = []
