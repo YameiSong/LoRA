@@ -184,7 +184,7 @@ class HfArgumentParser(ArgumentParser):
         # with `--local_rank` to make sure the argument is parsed correctly.
         for rarg in remaining_args:
             if rarg.startswith("--local-rank"):
-                local_rank = rarg.split("=")[1]
+                local_rank = int(rarg.split("=")[1])
                 setattr(namespace, "local_rank", local_rank)
                 remaining_args.remove(rarg)
                 break
