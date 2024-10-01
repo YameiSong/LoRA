@@ -177,15 +177,18 @@ class HfArgumentParser(ArgumentParser):
                 args = fargs + args if args is not None else fargs + sys.argv[1:]
                 # in case of duplicate arguments the first one has precedence
                 # so we append rather than prepend.
-
+        namespace, remaining_args = self.parse_known_args(args=args)
         # ValueError: Some specified arguments are not used by the HfArgumentParser: ['--local-rank=1']
         # torch.distributed.launch adds extra argument `--local-rank` that is not recognized by the parser
         # huggingface's TrainingArguments class has `local_rank` as an attribute, so we replace `--local-rank`
-        # with `--local_rank` to make sure the argument is parsed correctly
+        # with `--local_rank` to make sure the argument is parsed correctly.
+        for rarg in remaining_args:
+            if rarg.startswith("--local-rank"):
+                local_rank = rarg.split("=")[1]
+                setattr(namespace, "local_rank", local_rank)
+                remaining_args.remove(rarg)
+                break
 
-        namespace, remaining_args = self.parse_known_args(args=args)
-        print("===== namespace:", str(namespace))
-        print("===== remaining_args:", str(remaining_args))
         outputs = []
         for dtype in self.dataclass_types:
             keys = {f.name for f in dataclasses.fields(dtype) if f.init}
