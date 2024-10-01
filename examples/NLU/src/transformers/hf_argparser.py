@@ -177,6 +177,11 @@ class HfArgumentParser(ArgumentParser):
                 args = fargs + args if args is not None else fargs + sys.argv[1:]
                 # in case of duplicate arguments the first one has precedence
                 # so we append rather than prepend.
+        # torch.distributed.launch adds extra argument `--local-rank=<rank>` that is not recognized by the parser
+        # huggingface's TrainingArguments class has `local_rank` as an attribute, so we replace `--local-rank=<rank>`
+        # with `--local_rank=<rank>` to make sure the argument is parsed correctly
+        args = [re.sub(r"^--local-rank=([0-9]+)$", r"--local_rank=\1", arg) for arg in args]
+        
         namespace, remaining_args = self.parse_known_args(args=args)
         outputs = []
         for dtype in self.dataclass_types:
