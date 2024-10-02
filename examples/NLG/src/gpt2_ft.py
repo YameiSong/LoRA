@@ -261,6 +261,7 @@ def train_validate(
 
 
 if __name__ == '__main__':
+    print('====== start to train the model................')
     try:
         args = parser.parse_args()
     except ArgumentError as e:
