@@ -35,6 +35,8 @@ from exp_utils import create_exp_dir
 
 import loralib as lora
 
+from argparse import ArgumentError
+
 parser = argparse.ArgumentParser(description='PyTorch GPT2 ft script')
 
 add_gpu_params(parser)
@@ -259,20 +261,18 @@ def train_validate(
 
 
 if __name__ == '__main__':
-    print('====== start to train the model................')
-    try:
-        # parse_args
-        args, argv = parser.parse_known_args()
-        if argv:
-            msg = 'unrecognized arguments: %s' % ' '.join(argv)
-            raise Exception(None, msg)
-    except Exception as e:
-        parser.print_help()
-        print("====== Error: ", e)
-    print('====== finish to parse the arguments................')
+    # args = parser.parse_args()
+    # Handle unrecognized argument: "--local-rank"
+    args, argv = parser.parse_known_args()
+    if argv:
+        for unknown_arg in argv:
+            if unknown_arg.startswith('--local-rank'):
+                setattr(args, 'local_rank', int(unknown_arg.split('=')[1]))
+            else:
+                msg = 'unrecognized arguments: %s' % ' '.join(argv)
+                raise ArgumentError(None, msg)
     parse_gpu(args)
     print_args(args)
-    
 
     if args.fp16:
         try:
