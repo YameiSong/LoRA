@@ -35,8 +35,6 @@ from exp_utils import create_exp_dir
 
 import loralib as lora
 
-from argparse import ArgumentError
-
 parser = argparse.ArgumentParser(description='PyTorch GPT2 ft script')
 
 add_gpu_params(parser)
@@ -264,7 +262,7 @@ if __name__ == '__main__':
     print('====== start to train the model................')
     try:
         args = parser.parse_args()
-    except ArgumentError as e:
+    except Exception as e:
         parser.print_help()
         print("====== Error: ", e)
         sys.exit(1)
