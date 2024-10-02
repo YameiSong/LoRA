@@ -261,7 +261,11 @@ def train_validate(
 if __name__ == '__main__':
     print('====== start to train the model................')
     try:
-        args = parser.parse_args()
+        # parse_args
+        args, argv = parser.parse_known_args()
+        if argv:
+            msg = 'unrecognized arguments: %s' % ' '.join(argv)
+            raise Exception(None, msg)
     except Exception as e:
         parser.print_help()
         print("====== Error: ", e)
