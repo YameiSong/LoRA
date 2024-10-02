@@ -35,6 +35,8 @@ from exp_utils import create_exp_dir
 
 import loralib as lora
 
+from argparse import ArgumentError
+
 parser = argparse.ArgumentParser(description='PyTorch GPT2 ft script')
 
 add_gpu_params(parser)
@@ -259,7 +261,11 @@ def train_validate(
 
 
 if __name__ == '__main__':
-    args = parser.parse_args()
+    try:
+        args = parser.parse_args()
+    except ArgumentError as e:
+        parser.print_help()
+        sys.exit(1)
     parse_gpu(args)
     print_args(args)
 
