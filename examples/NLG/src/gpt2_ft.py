@@ -265,6 +265,7 @@ if __name__ == '__main__':
         args = parser.parse_args()
     except ArgumentError as e:
         parser.print_help()
+        print("====== Error: ", e)
         sys.exit(1)
     parse_gpu(args)
     print_args(args)
