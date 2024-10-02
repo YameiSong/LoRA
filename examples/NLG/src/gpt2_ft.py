@@ -265,9 +265,10 @@ if __name__ == '__main__':
     except Exception as e:
         parser.print_help()
         print("====== Error: ", e)
-        sys.exit(1)
+    print('====== finish to parse the arguments................')
     parse_gpu(args)
     print_args(args)
+    
 
     if args.fp16:
         try:
