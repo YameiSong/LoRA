@@ -95,7 +95,7 @@ dependencies:
     - sklearn==0.0
     - tensorboardx==1.8
     - threadpoolctl==2.2.0
-    - tokenizers==0.10.3
+    - tokenizers>=0.10.3
     - tqdm==4.61.2
     - triton==0.4.2
     - urllib3==1.26.5
