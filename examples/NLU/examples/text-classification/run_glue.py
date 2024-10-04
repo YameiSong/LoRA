@@ -133,7 +133,7 @@ class DataTrainingArguments:
             raise ValueError("Need either a GLUE task or a training/validation file.")
         else:
             train_extension = self.train_file.split(".")[-1]
-            assert train_extension in ["csv", "json"], "`train_file` should be a csv or a json file."
+            assert train_extension in ["csv", "json", "parquet"], "`train_file` should be a csv / json / parquet file."
             validation_extension = self.validation_file.split(".")[-1]
             assert (
                 validation_extension == train_extension
