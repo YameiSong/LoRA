@@ -122,6 +122,7 @@ class DataTrainingArguments:
         default=None, metadata={"help": "A csv/tsv or a json file containing the validation data."}
     )
     test_file: Optional[str] = field(default=None, metadata={"help": "A csv or a json file containing the test data."})
+    metric_file: Optional[str] = field(default=None, metadata={"help": "A py file to compute the metric for the task."})
 
     def __post_init__(self):
         if self.task_name is not None:
@@ -510,6 +511,8 @@ def main():
     # Get the metric function
     if data_args.task_name is not None:
         metric = load_metric("glue", data_args.task_name)
+    else:
+        metric = load_metric(data_args.metric_file)
     # TODO: When datasets metrics include regular accuracy, make an else here and remove special branch from
     # compute_metrics
 
