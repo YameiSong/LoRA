@@ -116,10 +116,10 @@ class DataTrainingArguments:
         },
     )
     train_file: Optional[str] = field(
-        default=None, metadata={"help": "A csv or a json file containing the training data."}
+        default=None, metadata={"help": "A csv/tsv or a json file containing the training data."}
     )
     validation_file: Optional[str] = field(
-        default=None, metadata={"help": "A csv or a json file containing the validation data."}
+        default=None, metadata={"help": "A csv/tsv or a json file containing the validation data."}
     )
     test_file: Optional[str] = field(default=None, metadata={"help": "A csv or a json file containing the test data."})
 
@@ -312,6 +312,9 @@ def main():
         if data_args.train_file.endswith(".csv"):
             # Loading a dataset from local csv files
             datasets = load_dataset("csv", data_files=data_files)
+        elif data_args.train_file.endswith(".parquet"):
+            # Loading a dataset from local parquet files
+            datasets = load_dataset("parquet", data_files=data_files)
         else:
             # Loading a dataset from local json files
             datasets = load_dataset("json", data_files=data_files)
