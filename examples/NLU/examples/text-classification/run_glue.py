@@ -509,7 +509,7 @@ def main():
             logger.info(f"Sample {index} of the training set: {train_dataset[index]}.")
 
     # Get the metric function
-    if data_args.task_name is not None:
+    if data_args.task_name is not None and data_args.metric_file is None:
         metric = load_metric("glue", data_args.task_name)
     else:
         metric = load_metric(data_args.metric_file)
