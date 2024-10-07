@@ -515,7 +515,7 @@ def main():
         metric = evaluate.load("glue", data_args.task_name)
     else:
         # metric = load_metric(data_args.metric_file, trust_remote_code=True)
-        metric = evaluate.load(data_args.metric_file)
+        metric = evaluate.load(data_args.metric_file, data_args.task_name)
     # TODO: When datasets metrics include regular accuracy, make an else here and remove special branch from
     # compute_metrics
 
