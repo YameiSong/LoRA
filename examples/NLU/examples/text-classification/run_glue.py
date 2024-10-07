@@ -116,12 +116,12 @@ class DataTrainingArguments:
         },
     )
     train_file: Optional[str] = field(
-        default=None, metadata={"help": "A csv/tsv or a json file containing the training data."}
+        default=None, metadata={"help": "A csv/json/parquet file containing the training data."}
     )
     validation_file: Optional[str] = field(
-        default=None, metadata={"help": "A csv/tsv or a json file containing the validation data."}
+        default=None, metadata={"help": "A csv/json/parquet file containing the validation data."}
     )
-    test_file: Optional[str] = field(default=None, metadata={"help": "A csv or a json file containing the test data."})
+    test_file: Optional[str] = field(default=None, metadata={"help": "A csv/json/parquet file containing the test data."})
     metric_file: Optional[str] = field(default=None, metadata={"help": "A py file to compute the metric for the task."})
 
     def __post_init__(self):
@@ -286,7 +286,7 @@ def main():
     #
     # In distributed training, the load_dataset function guarantee that only one local process can concurrently
     # download the dataset.
-    if data_args.task_name is not None:
+    if data_args.task_name is not None and data_args.train_file is None:
         # Downloading and loading a dataset from the hub.
         datasets = load_dataset("glue", data_args.task_name)
     else:
