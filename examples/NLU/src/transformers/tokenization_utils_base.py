@@ -2234,7 +2234,7 @@ class PreTrainedTokenizerBase(SpecialTokensMixin):
             )
         ), (
             "text_pair input must of type `str` (single example), `List[str]` (batch or single pretokenized example) "
-            "or `List[List[str]]` (batch of pretokenized examples)."
+            "or `List[List[str]]` (batch of pretokenized examples). Received text_pair={}." % (text_pair)
         )
 
         is_batched = bool(
