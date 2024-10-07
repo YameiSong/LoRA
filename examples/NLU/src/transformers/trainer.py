@@ -876,7 +876,7 @@ class Trainer:
                 raise ValueError(f"No valid checkpoint found in output directory ({self.args.output_dir})")
 
         if resume_from_checkpoint is not None and os.path.isfile(os.path.join(resume_from_checkpoint, WEIGHTS_NAME)):
-            logger.info(f"Loading model from {resume_from_checkpoint}).")
+            logger.info(f"Loading model from {resume_from_checkpoint}.")
             state_dict = torch.load(os.path.join(resume_from_checkpoint, WEIGHTS_NAME), map_location="cpu")
             self._load_state_dict_in_model(state_dict)
             del state_dict
@@ -1984,7 +1984,8 @@ class Trainer:
         load_result = self.model.load_state_dict(state_dict, strict=False)
 
         if len(load_result.missing_keys) != 0:
-            if set(load_result.missing_keys) == set(self.model._keys_to_ignore_on_save):
+            if self.model._keys_to_ignore_on_save and \
+                set(load_result.missing_keys) == set(self.model._keys_to_ignore_on_save):
                 self.model.tie_weights()
             else:
                 logger.warn(f"There were missing keys in the checkpoint model loaded: {load_result.missing_keys}.")
