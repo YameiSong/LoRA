@@ -88,6 +88,7 @@ _deps = [
     "cookiecutter==1.7.2",
     "dataclasses",
     "datasets<2.3.0",
+    "evaluate",
     "faiss-cpu",
     "fastapi",
     "filelock",
