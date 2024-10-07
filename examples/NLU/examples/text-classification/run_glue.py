@@ -512,7 +512,7 @@ def main():
     if data_args.task_name is not None and data_args.metric_file is None:
         metric = load_metric("glue", data_args.task_name)
     else:
-        metric = load_metric(data_args.metric_file)
+        metric = load_metric(data_args.metric_file, trust_remote_code=True)
     # TODO: When datasets metrics include regular accuracy, make an else here and remove special branch from
     # compute_metrics
 
