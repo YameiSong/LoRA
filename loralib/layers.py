@@ -160,6 +160,7 @@ class Linear(nn.Linear, LoRALayer):
 
 class MergedLinear(nn.Linear, LoRALayer):
     # LoRA implemented in a dense layer
+    # === MergedLinear is a specialized implementation that provides more control over which parts of the Linear layer use LoRA
     def __init__(
         self, 
         in_features: int, 
@@ -167,7 +168,7 @@ class MergedLinear(nn.Linear, LoRALayer):
         r: int = 0, 
         lora_alpha: int = 1, 
         lora_dropout: float = 0.,
-        enable_lora: List[bool] = [False],
+        enable_lora: List[bool] = [False], # === key difference from Linear
         fan_in_fan_out: bool = False,
         merge_weights: bool = True,
         **kwargs
