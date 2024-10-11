@@ -91,12 +91,19 @@ class Attention(nn.Module):
         self.n_head = config.n_head
         self.split_size = n_state
         self.scale = scale
+        # === GPT uses a single linear layer `self.c_attn` to perform the linear transformation for all three parts
+        # of the attention matrix (query, key, value), while large-scale Transformer models like BERT and RoBERTa use
+        # separate linear layers for the query, key, and value parts of the attention matrix.
+        # === GPT uses `lora.MergedLinear` to apply LoRA to the query, key, and value parts of the attention matrix.
+        # === In contrast, since the `DisentangledSelfAttention` in `modeling_deberta_v2.py` uses separate linear
+        # layers for the query, key, and value parts of the attention matrix, it directly uses `lora.Linear` to 
+        # apply LoRA to the query, key, and value projections.
         self.c_attn = lora.MergedLinear(
             nx, n_state * 3, 
             r=config.lora_attn_dim, 
             lora_alpha=config.lora_attn_alpha, 
             lora_dropout=config.lora_dropout, 
-            enable_lora=[True, False, True], 
+            enable_lora=[True, False, True], # === for query, key, value
             fan_in_fan_out=True,
             merge_weights=False
         )
