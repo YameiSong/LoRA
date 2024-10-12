@@ -625,7 +625,6 @@ def main():
                         else:
                             item = label_list[item]
                             writer.write(f"{index}\t{item}\n")
-                        logger.info(f"index: {index}, prediction: {item}")
 
 
 def _mp_fn(index):
