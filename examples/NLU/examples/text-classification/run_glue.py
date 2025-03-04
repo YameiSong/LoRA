@@ -62,7 +62,6 @@ task_to_keys = {
 }
 
 logger = logging.getLogger(__name__)
-print('Enter run_glue.py')
 
 @dataclass
 class DataTrainingArguments:
